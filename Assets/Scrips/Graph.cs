@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using UnityEngine;
 
-public class Graph<TKey, TNodeValue>
+public class Graph<TKey, TNodeValue> : MonoBehaviour
 {
     public Dictionary<TKey, Node<TNodeValue>> Nodes { get; set; }
 
@@ -19,7 +21,6 @@ public class Graph<TKey, TNodeValue>
             Nodes.Add(key, newNode);
         }
     }
-
     public virtual void AddEdge(TKey key1, TKey key2)
     {
         if (Nodes.ContainsKey(key1) && Nodes.ContainsKey(key2))
@@ -99,7 +100,7 @@ public class Graph<TKey, TNodeValue>
     public void DisplayGraphAsList()
     {
         Debug.Log("Grafo");
-        if(Nodes.Count == 0)
+        if (Nodes.Count == 0)
         {
             Debug.Log("El grafo esta vacío");
             return;
@@ -123,5 +124,63 @@ public class Graph<TKey, TNodeValue>
             }
             Debug.Log(NodeValues);
         }
+    }
+    public List<TKey> BFS(TKey startKey)
+    {
+        var visitados = new HashSet<Node<TNodeValue>>();
+        var resultado = new List<TKey>();
+
+        if (!Nodes.ContainsKey(startKey))
+            return resultado;
+
+        var cola = new Queue<Node<TNodeValue>>();
+        var StartNode = Nodes[startKey];
+        cola.Enqueue(StartNode);
+        visitados.Add(StartNode);
+
+        var nodeToKey = Nodes.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+
+        while (cola.Count > 0)
+        {
+            var actual = cola.Dequeue();
+            resultado.Add(nodeToKey[actual]);
+
+            foreach (var vecino in actual.neighbors)
+            {
+                if (!visitados.Contains(vecino))
+                {
+                    visitados.Add(vecino);
+                    cola.Enqueue(vecino);
+                }
+            }
+        }
+        return resultado;
+    }
+    public List<TKey> DFS(TKey startkey)
+    {
+        var visitados = new HashSet<Node<TNodeValue>>();
+        var resultado = new List<TKey>();
+
+        if (!Nodes.ContainsKey(startkey))
+            return resultado;
+
+        var nodeToKey = Nodes.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+
+        void DFSRecursivo(Node<TNodeValue> actual)
+        {
+            visitados.Add(actual);
+            resultado.Add(nodeToKey[actual]);
+
+            foreach (var vecino in actual.Neighbors)
+            {
+                if (!visitados.Contains(vecino))
+                {
+                    DFSRecursivo(vecino);
+                }
+            }
+        }
+
+        DFSRecursivo(Nodes[startkey]);
+        return resultado;
     }
 }

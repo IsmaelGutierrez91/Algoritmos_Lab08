@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    /*
     public GameObject LVL1;
     public GameObject LVL2;
     public GameObject LVL3;
@@ -31,7 +32,7 @@ public class GameManager : MonoBehaviour
     public void ConnectNodes(int node1ID, int node2ID)
     {
         Grafos.AddEdge(node1ID, node2ID);
-        LetterNodes[node2ID].GetComponent<LineDrawer>().SetTarget(LetterNodes[node1ID].transform);
+        //LetterNodes[node2ID].GetComponent<LineDrawer>().SetTarget(LetterNodes[node1ID].transform);
         Debug.Log("The conection is maked");
     }
     [Button("Show Matrix")]
@@ -39,4 +40,5 @@ public class GameManager : MonoBehaviour
     {
         Grafos.DisplayGraphAsMatrix();
     }
+    */
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node <T>
+public class Node <T> : MonoBehaviour
 {
     #region Properties
     private T key;
